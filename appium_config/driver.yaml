@@ -1,0 +1,25 @@
+# Appium 3.X 驱动配置
+
+# 驱动版本配置
+drivers:
+  uiautomator2:
+    version: latest
+    install: true
+  espresso:
+    version: latest
+    install: false
+  xcuitest:
+    version: latest
+    install: false
+
+# 启动参数
+capabilities:
+  platformName: Android
+  automationName: UiAutomator2
+  deviceName: ${DEVICE_NAME}
+  udid: ${DEVICE_UDID}
+  appPackage: ${APP_PACKAGE}
+  appActivity: ${APP_ACTIVITY}
+  noReset: true
+  fullReset: false
+  newCommandTimeout: 60

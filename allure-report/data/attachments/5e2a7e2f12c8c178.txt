@@ -1,4 +1,0 @@
-测试开始，已连接到设备
-点击Access'ibility按钮
-点击Accessibility Node Provider按钮
-测试完成

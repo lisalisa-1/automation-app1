@@ -1,5 +1,0 @@
-
-测试文本输入框操作
-正在向下滑动以查找TextFields控件
-已在文本框中输入: Hello Appium!
-获取到的文本: Hello Appium!

@@ -15,8 +15,9 @@ import allure
 def driver():
     """创建并管理Appium驱动实例"""
     options = UiAutomator2Options()
+    options.udid="emulator-5554"
     options.platform_name = 'Android'
-    options.device_name = '24ecd0a2'
+    options.device_name = '111'
     #options.app = 'path/to/ApiDemos-debug.apk'
     options.app_package = 'io.appium.android.apis'
     options.app_activity = '.ApiDemos'

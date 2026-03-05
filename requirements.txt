@@ -1,2 +1,23 @@
-Appium-Python-Client>=2.10.0
-selenium>=4.10.0
+# 依赖清单
+
+# Appium 3.X 兼容版本
+appium-python-client>=3.3.0
+
+# 测试框架
+pytest>=7.0.0
+pytest-allure-adaptor>=1.7.10
+pytest-rerunfailures>=10.2
+
+# 配置管理
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# 数据处理
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# 日志管理
+loguru>=0.7.0
+
+# 其他工具
+selenium>=4.0.0
