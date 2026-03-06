@@ -46,11 +46,11 @@ def run_tests():
     
     # 生成Allure报告
     logger.info("生成Allure报告...")
-    os.system('allure generate ./reports/allure-results -o ./reports/allure-report --clean --encoding=utf-8')
+    #os.system('allure generate ./reports/allure-results -o ./reports/allure-report --clean --encoding=utf-8')
     
     # 查看报告
     logger.info("查看Allure报告...")
-    os.system('allure serve ./reports/allure-results')
+    #os.system('allure serve ./reports/allure-results')
     
     logger.info("测试完成！报告已生成在 reports/allure-report 目录中")
 
