@@ -7,7 +7,7 @@ import pytest
 def user_data(request):
     return request.param  # 通过 request 对象获取当前参数
 
-class TestCartPage:
+class Te1stCartPage:
 
     @pytest.mark.regress
     @pytest.mark.skipif(pytest.__version__ < "11.0", reason="pytest版本低于7.0，跳过")

@@ -7,6 +7,7 @@ import platform
 import sys
 from pathlib import Path
 from core import PageFactory
+from utils import ScreenshotUtils
 # 初始化日志
 
 init_logger()
@@ -86,12 +87,14 @@ def pytest_configure(config):
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
+    logger.info(f"\n钩子触发 → 用例：{item.nodeid} | 阶段：{rep.when} | 是否失败：{rep.failed}")
+
     if rep.when == "call" and rep.failed:
         try:
             driver = item.funcargs["driver"]
-            #take_screenshot(driver, f"test_failed_{item.name}")
+            ScreenshotUtils.capture(driver, f"test_failed_{item.name}")
         except Exception as e:
-            logger.error(f"失败截图失败：{str(e)}")
+            logger.error(f"截图失败：{str(e)}")
 
 
 # 动态Page Fixture（接收需要的Page名称列表）

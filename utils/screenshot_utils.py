@@ -48,7 +48,7 @@ class ScreenshotUtils:
         """
         # 确定最终截图目录
         target_dir = screenshot_dir or cls.DEFAULT_SCREENSHOT_DIR
-        cls._ensure_dir(target_dir)
+        #cls._ensure_dir(target_dir)
 
         # 生成唯一文件名和路径
         filename = cls._get_unique_filename(name)

@@ -44,8 +44,7 @@ def page_objects(driver):
 @allure.feature("UI交互测试")  # 大模块
 class TestHomePage:
 
-
-
+    @pytest.mark.run(order=1)
     @allure.story("服务按钮选择")  # 子功能
     @allure.severity(allure.severity_level.CRITICAL)  # 优先级
     @pytest.mark.parametrize("casename, parameter", test_home_data)
@@ -59,9 +58,7 @@ class TestHomePage:
         with allure.step("点击首页按钮"):
             home_page.click_home_button()
 
-
-
-
+    @pytest.mark.run(order=2)
     @allure.story("分类按钮点击")  # 子功能
     def test_category_buttons(self,page_objects):
         """测试分类按钮功能"""

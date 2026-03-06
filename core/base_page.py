@@ -24,7 +24,7 @@ class BasePage:
             logger.debug(f"找到元素：{by}={value}")
             return element
         except (NoSuchElementException, TimeoutException):
-            ScreenshotUtils.capture(self.driver, f"element_not_found_{value}")
+            #ScreenshotUtils.capture(self.driver, f"element_not_found_{value}")
             raise NoSuchElementException(f"元素定位失败：{by}={value}")
 
     def click(self, locator: tuple):

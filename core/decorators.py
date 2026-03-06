@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 logger = logging.getLogger(__name__)
 
-def retry_on_exception(max_attempts: int = 3, delay: int = 1):
+def retry_on_exception(max_attempts: int = 2, delay: int = 1):
     """
     异常重试装饰器：适配 Appium 3.X 元素定位不稳定问题
     :param max_attempts: 最大重试次数
@@ -23,7 +23,8 @@ def retry_on_exception(max_attempts: int = 3, delay: int = 1):
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                logger.warning(f"执行 {func.__name__} 失败，第 {wrapper.retry.statistics['attempt_number']} 次重试...")
+                #logger.warning(f"执行 {func.__name__} 失败，第 {wrapper.retry.statistics['attempt_number']} 次重试...")
+                logger.warning(f"执行 {func.__name__} 失败，第 1 次重试...")
                 raise
         return wrapper
     return decorator
