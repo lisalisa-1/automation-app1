@@ -1,0 +1,36 @@
+test_order_flow:
+  case1:  # 即使单条也用case1包裹，格式和多条统一
+    case_name: "TC001_登录_冒烟用例_正确密码"
+    mark: "smoke"
+    # 1. 登录阶段数据
+    login:
+      username: "test_user_01"
+      password: "Pass1234!"
+      expected_login_result: "success"
+    # 2. 搜索阶段数据
+    search:
+      keyword: "iPhone 15 Pro"
+      filter_condition: "销量优先"
+      expected_product_found: true
+
+    # 3. 购物车阶段数据
+    cart:
+      action: "add_to_cart"
+      quantity: 1
+      expected_cart_count: 1
+      goods_info:
+        goods_id: "G001"
+        num: 2
+        price: 99.9
+      expected:
+        order_status: "created"
+        pay_status: "paid"
+        total_amount: 199.8
+    # 4. 下单/结算阶段数据
+    order:
+      address_id: "addr_default_01"
+      payment_method: "wechat"
+      coupon_code: ""
+      expected_order_status: "pending_payment"
+      expected_total_price: 7999.00
+

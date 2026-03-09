@@ -1,0 +1,6 @@
+test_category_search:
+  case1:
+    case_name: "TC001_测试分类搜索"
+    category_keyword: "小米"
+    expect: "fail"
+    mark: "regression"

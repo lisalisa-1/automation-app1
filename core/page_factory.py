@@ -13,6 +13,18 @@ class PageFactory:
             elif page_name == "category_page":
                 from pages import CategoryPage
                 self.page_cache["category_page"] = CategoryPage(self.driver)
+            elif page_name == "my_page":
+                from pages import MyPage
+                self.page_cache["my_page"] = MyPage(self.driver)
+            elif page_name == "cart_page":
+                from pages import CartPage
+                self.page_cache["cart_page"] = CartPage(self.driver)
+
+            elif page_name == "goods_page":
+                from pages import GoodsPage
+                self.page_cache["goods_page"] = GoodsPage(self.driver)
+            else:
+                raise ValueError(f"未定义Page: {page_name}")
 
         return self.page_cache.get(f"{page_name}")
 

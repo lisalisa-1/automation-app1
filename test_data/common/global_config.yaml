@@ -1,0 +1,6 @@
+# 全局通用数据
+base_url: "https://test-api.com"
+test_account:
+  username: "test_user_01"
+  password: "123456"
+timeout: 10

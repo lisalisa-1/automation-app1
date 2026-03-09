@@ -8,22 +8,22 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 class HomePage(BasePage):
     """首页"""
 
-    
-    @retry()
+
+    @retry_on_exception(max_attempts=1)
     def click_home_button(self):
         """点击首页按钮"""
         self.click(HomeElement.HOME_BUTTON)
 
     @retry(
-        stop=stop_after_attempt(3),  # 最多重试3次
-        wait=wait_fixed(2)  # 每次重试间隔2秒
+        stop=stop_after_attempt(1),  # 最多重试3次
+        wait=wait_fixed(0)  # 每次重试间隔2秒
     )
-    def click_category(self):
+    def click_category_button(self):
         """点击分类按钮"""
         self.click(HomeElement.CATEGORY_BUTTON)
     
     @retry()
-    def click_mine(self):
+    def click_my_button(self):
         """点击我的按钮"""
         self.click(HomeElement.MINE_BUTTON)
 
@@ -35,4 +35,6 @@ class HomePage(BasePage):
     def click_cart_button(self):
         """点击购物车按钮"""
         self.click(HomeElement.CART_BUTTON)
+
+
 

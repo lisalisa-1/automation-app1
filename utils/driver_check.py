@@ -1,8 +1,8 @@
 import subprocess
-import logging
-from config.config_loader import appium3_cfg
+import time
 
-logger = logging.getLogger(__name__)
+from config.config_loader import Appium3Settings
+from loguru import logger
 
 def check_appium3_env():
     """检查 Appium 3.X 环境是否符合要求"""
@@ -24,19 +24,25 @@ def check_appium3_env():
 
     # 2. 检查驱动是否安装
     try:
+        cmd = 'appium driver list --installed'
         result = subprocess.run(
-            ["appium", "driver", "list", "--installed"],
-            capture_output=True,
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
-            check=True,
-            shell=True
+            shell=True,  # Windows 下必须加，因为appium是cmd脚本
+            encoding='utf-8'  # 可选：指定编码，避免中文乱码
         )
-        # if appium3_cfg.driver_name not in result.stdout:
-        #     # 自动安装驱动
-        #     install_cmd = f"appium driver install {appium3_cfg.driver_name}@{appium3_cfg.driver_version}"
-        #     subprocess.run(install_cmd.split(), check=True)
-        #     logger.info(f"✅ 自动安装驱动：{appium3_cfg.driver_name}@{appium3_cfg.driver_version}")
-        # else:
-        #     logger.info(f"✅ 驱动 {appium3_cfg.driver_name} 已安装")
+
+        logger.info(f"已安装驱动列表：{result.stdout.strip()}")
+        app3_setting=Appium3Settings()
+        if app3_setting.driver_name not in result.stdout:
+            # 自动安装驱动
+            install_cmd = f"appium driver install {app3_setting.driver_name}@{app3_setting.driver_version}"
+            logger.info(f"🔧 执行安装命令：{install_cmd}")
+            subprocess.run(install_cmd.split(), check=True)
+            logger.info(f"✅ 自动安装驱动：{app3_setting.driver_name}@{app3_setting.driver_version}")
+        else:
+            logger.info(f"✅ 驱动 {app3_setting.driver_name} 已安装")
     except Exception as e:
         raise RuntimeError(f"驱动检查/安装失败：{str(e)}")

@@ -1,12 +1,10 @@
-import logging
+from loguru import logger
 from appium.webdriver import Remote
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from utils.screenshot_utils import ScreenshotUtils
 
-logger = logging.getLogger(__name__)
+
 
 
 class BasePage:
@@ -26,11 +24,20 @@ class BasePage:
         except (NoSuchElementException, TimeoutException):
             #ScreenshotUtils.capture(self.driver, f"element_not_found_{value}")
             raise NoSuchElementException(f"元素定位失败：{by}={value}")
+    def find_elements(self, locator: tuple):
+        """查找元素（3.X 兼容定位方式）"""
+        by, value = locator
+        try:
+            elements = self.wait.until(EC.presence_of_all_elements_located((by, value)))
+            logger.debug(f"找到元素：{by}={value}")
+            return elements
+        except (NoSuchElementException, TimeoutException):
+            raise NoSuchElementException(f"元素定位失败：{by}={value}")
 
     def click(self, locator: tuple):
         """点击元素"""
         self.find_element(locator).click()
-        logger.debug(f"点击元素：{locator}")
+        logger.info(f"点击元素：{locator}")
 
     def send_keys(self, locator: tuple, text: str):
         """输入文本"""
@@ -65,3 +72,8 @@ class BasePage:
     def get_current_activity(self) -> str:
         """获取当前 Activity（Android）"""
         return self.driver.current_activity
+
+    def click_browser_back(self):
+        """点击浏览器返回"""
+        self.driver.back()
+        logger.info("点击浏览器返回")

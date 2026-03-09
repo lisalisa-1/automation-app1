@@ -1,9 +1,13 @@
 import json
+#from .tt_json import *
+import tt_json
 name = "Alice"
 age = 25
 print(f"My name is {name} and I am {age} years old.")
 
+tt_json.data='123232'
 
+print("")
 # 定义一个元组
 my_tuple = (1, 2, 3, 4, 5)
 

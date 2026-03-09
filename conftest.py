@@ -1,8 +1,9 @@
 import pytest
-import logging
-from core.driver_factory import Appium3DriverFactory
 from utils.log_utils import init_logger
-import allure
+from loguru import logger
+from config.config_loader import load_env
+from core.driver_factory import Appium3DriverFactory
+
 import platform
 import sys
 from pathlib import Path
@@ -11,25 +12,16 @@ from utils import ScreenshotUtils
 # 初始化日志
 
 init_logger()
-logger = logging.getLogger(__name__)
-
-
-
-PAGE_CLASSES = {
-    "category": "CategoryPage",
-    "home": "HomePage"
-
-}
-
 
 # 自定义命令行参数：指定测试环境
 def pytest_addoption(parser):
-    print(1)
-    parser.addoption("--env", action="store", default="test", help="测试环境：dev/test/prod")
+    parser.addoption("--env", action="store", default="test",choices=["dev", "test", "prod"], help="测试环境：dev/test/prod")
+    logger.info("添加命令行参数 --env")
 
 # 环境参数夹具
 @pytest.fixture(scope="session")
 def env(request):
+    logger.info(f"当前环境：{request.config.getoption('--env')}")
     return request.config.getoption("--env")
 
 # Appium 3.X 驱动夹具（会话级）
@@ -37,18 +29,12 @@ def env(request):
 def driver(env):
 
     """全局驱动：每个测试会话只创建一次"""
-    from config.config_loader import load_env
+    logger.info(f"加载环境配置：{env}")
     load_env(env)  # 加载指定环境配置
     driver_factory = Appium3DriverFactory()
     driver = driver_factory.create_driver()
     yield driver
     driver_factory.quit()
-
-# # 页面夹具（用例级）
-# @pytest.fixture(scope="function")
-# def login_page(driver):
-#     from pages.login_page import LoginPage
-#     return LoginPage(driver)
 
 # Allure 报告配置
 def pytest_configure(config):
@@ -92,40 +78,12 @@ def pytest_runtest_makereport(item, call):
     if rep.when == "call" and rep.failed:
         try:
             driver = item.funcargs["driver"]
-            ScreenshotUtils.capture(driver, f"test_failed_{item.name}")
+            ScreenshotUtils.capture(driver, f"test_failed_")
         except Exception as e:
             logger.error(f"截图失败：{str(e)}")
-
-
-# 动态Page Fixture（接收需要的Page名称列表）
-@pytest.fixture(scope="function")
-def page_objects(request, driver):
-    """
-    动态初始化Page对象
-    :param request: pytest的请求对象，用于接收参数
-    :param appium_driver: 全局Driver Fixture
-    :return: 按需初始化的Page字典
-    """
-    # 获取用例传入的需要的Page列表（默认空）
-    required_pages = request.param if hasattr(request, "param") else []
-
-    page_dict = {}
-    for page_name in required_pages:
-        # 动态导入并初始化Page类（避免全部导入）
-        if page_name == "home":
-            from pages import HomePage
-            page_dict["home_page"] = HomePage(driver)
-        elif page_name == "category":
-            from pages import CategoryPage
-            page_dict["category_page"] = CategoryPage(driver)
-    return page_dict
-
 
 @pytest.fixture(scope="function",autouse=True)
 def page_factory(driver):
     """Page工厂Fixture"""
     return PageFactory(driver)
 
-@pytest.fixture(autouse=True)
-def tem1():
-    print("tem1")

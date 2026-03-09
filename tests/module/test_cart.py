@@ -3,11 +3,35 @@ import allure
 import pytest
 
 
-@pytest.fixture(params=[("admin", "123"), ("guest", "456")], ids=["管理员", "访客"],name='get_data1')
-def user_data(request):
-    return request.param  # 通过 request 对象获取当前参数
 
-class Te1stCartPage:
+class TestCartPage:
+
+
+    @allure.story("添加购物车")
+    def test_add_cart(self,page_factory):
+        """初始化页面"""
+        home_page = page_factory.get_page("home_page")
+        category_page = page_factory.get_page("category_page")
+        goods_page = page_factory.get_page("goods_page")
+        with allure.step("点击分类"):
+            home_page.click_category_button()
+        with allure.step("获取商品列表"):
+            list_goods = category_page.get_list_goods()
+            assert len(list_goods) > 0
+        with allure.step("点击第一个商品"):
+            list_goods[0].click()
+        with allure.step("获取商品价格"):
+            goods_price = goods_page.get_text_goods_price()
+            assert goods_price.get_attribute("content-desc").endswith("元")
+        with allure.step("点击加入购物车按钮"):
+            goods_page.click_button_add_cart()
+        # with allure.step("点击添加购物车按钮"):
+        #     product_page = page_factory.get_page("product_page")
+        #     product_page.click_add_cart_button()
+        # with allure.step("验证购物车不为空"):
+        #     cart_page = page_factory.get_page("cart_page")
+        #     assert cart_page.is_cart_not_empty()
+
 
     @pytest.mark.regress
     @pytest.mark.skipif(pytest.__version__ < "11.0", reason="pytest版本低于7.0，跳过")
@@ -45,6 +69,8 @@ class Te1stCartPage:
     @pytest.mark.parametrize("status", [200, 401, 403])
     def test_permission(self,user, status):
         print(f"用户: {user}, 预期状态码: {status}")
+
+
 
     @pytest.mark.parametrize("user, pwd", [("anjing", "123"), ("test", "456")],
                              ids=["正常用户", "测试用户"])

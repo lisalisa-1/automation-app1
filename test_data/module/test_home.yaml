@@ -1,0 +1,38 @@
+# data/login_data.yaml
+# 场景1：单条数据（仅case1）
+# 场景2：多条数据（case1/case2/case3）
+test_category_buttons:
+  case1:
+    case_name: "TC002_登录_密码错误"
+    phone: "13800138000"
+    pwd: "654321"
+    expect: "fail"
+    expect_tip: "密码错误"
+    mark: "regression"
+  case2:
+    case_name: "TC003_登录_手机号为空"
+    phone: ""
+    pwd: "123456"
+    expect: "fail"
+    expect_tip: "手机号不能为空"
+    mark: "regression"
+  case3:
+    case_name: "TC004_登录_手机号格式错误"
+    phone: "1234567890"
+    pwd: "123456"
+    expect: "fail"
+    expect_tip: "手机号格式不正确"
+    mark: "smoke"
+
+# 场景3：另一个单条数据示例（仅case1）
+test_service_buttons:
+  case1:
+    case_name: "TC005_登录_验证码登录成功"
+    phone: "13800138000"
+    verify_code: "888888"
+    expect: "success"
+    expect_tip: ""
+    mark: "smoke"
+test_cart_buttons:
+  case1:
+    case_name: "TC001_登录_点击购物车"

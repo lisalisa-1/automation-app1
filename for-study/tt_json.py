@@ -6,7 +6,7 @@ data = {
     'name': 'Runoob',
     'url': 'https://www.runoob.com'
 }
-
+print("ttjson",data)
 
 file_path = json.dump(data, open('data.json', 'w'), ensure_ascii=False, indent=4)
 
